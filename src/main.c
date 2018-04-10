@@ -5,9 +5,11 @@ int main(int argc, char *argv[])
   int fd; // file descriptor
   if(argc == 2) // if 2 argument ?
   {
-    if((fd = open(argv[1], O_RDONLY)) < 0) // file exits?
+    if((fd = open(argv[1], O_RDONLY)) > 0) // file exits?
     {
       /*Some works about parsing*/
+      char str[] = "File Opened Successfully\n";
+      write(1, str, sizeof(str));
       dex_parser_header(fd);
     }
     else
