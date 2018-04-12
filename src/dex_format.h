@@ -1,11 +1,12 @@
 #include<stdint.h>
 #include<unistd.h>
 #include<fcntl.h>
-typedef struct {
+typedef struct
+{
   uint8_t magic[8]; // ubyte
   uint32_t checksum; // uint
   uint8_t signature[20];
-  uint32_t file_szie;
+  uint32_t file_size;
   uint32_t header_size;
   uint32_t endian_tag;
   uint32_t link_size;
@@ -27,4 +28,19 @@ typedef struct {
   uint32_t data_off;
 } header_item;
 
-void dex_parser_header(int fd);
+typedef struct
+{
+  uint16_t type;
+  uint16_t unused;
+  uint32_t size;
+  uint32_t offset;
+} map_item;
+
+typedef struct
+{
+  uint32_t * size;
+  map_item * list;
+} map_list;
+
+//void dex_parser_header(int fd, header_item ** h_item);
+//void dex_parser_map(int fd, map_item ** m_item);

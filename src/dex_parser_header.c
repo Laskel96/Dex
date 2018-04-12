@@ -1,21 +1,16 @@
 #include "dex_format.h"
 #include <sys/mman.h>
-#include <stdio.h>
 
-void dex_parser_header(int fd)
+void dex_parser_header(int fd, header_item ** h_item)
 {
-  char str[] = "dex_parser_header called\n";
-  write(1, str , sizeof(str));
-  unsigned char * f;
-  f = mmap(0, sizeof(header_item), PROT_READ, MAP_PRIVATE, fd, 0);
-  //write(1, f, sizeof(header_item));
-
-  int i;
-  for(i = 0; i < sizeof(header_item); i++)
+  if((*h_item = (header_item *)mmap(0, sizeof(header_item), PROT_READ, MAP_PRIVATE, fd, 0)) == MAP_FAILED) // mmap failed
   {
-    printf("data in raw : %d\n", f[i]);
+    char str[] = "Error occurs while header parsing. (mmap)\n";
+    write(1, str , sizeof(str));
   }
-  printf("size : %d", i);
-
-
+ else// mmap success
+ {
+   char str[] = "pasre header successfully\n";
+   write(1, str , sizeof(str));
+ }
 }
