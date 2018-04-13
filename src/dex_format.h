@@ -36,11 +36,21 @@ typedef struct
   uint32_t offset;
 } map_item;
 
+/*
+
+original structure. not used.
+
+typedef struct
+{
+  uint32_t size;
+  map_item list[size];
+} map_list;
+
+*/
 typedef struct
 {
   uint32_t * size;
   map_item * list;
 } map_list;
-
-//void dex_parser_header(int fd, header_item ** h_item);
-//void dex_parser_map(int fd, map_item ** m_item);
+void parse(char * file, header_item ** h_item, uint32_t ** map_list_size, map_item ** map_item_list);
+void print_test(header_item * h_item, uint32_t * size, map_item * list);
