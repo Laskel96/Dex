@@ -8,19 +8,15 @@ ifeq (DEBUG, 1)
 	CLFAGS += -g
 endif
 
-parser:$(SRC)/main.o $(SRC)/print_test.o $(SRC)/parse.o
-		$(CC) -o $@ $(SRC)/main.o $(SRC)/print_test.o $(SRC)/parse.o
-
-
+parser:$(SRC)/main.o $(SRC)/parseHeader.o $(SRC)/parseMap.o
+		$(CC) -o $@ $(SRC)/main.o $(SRC)/parseHeader.o $(SRC)/parseMap.o
 
 $(TARGET):$(OBJS)
 		$(CC) -c -o $@ $(OBJS)
 
-$(SRC)/parse.o : $(SRC)/parse.c
-$(SRC)/print_test.o : $(SRC)/print_test.c
 $(SRC)/main.o : $(SRC)/main.c
-
-
+$(SRC)/parseHeader.o : $(SRC)/parseHeader.c
+$(SRC)/parseMap.o : $(SRC)/parseMap.c
 
 clean:
 		rm -f parser $(SRC)/*.o

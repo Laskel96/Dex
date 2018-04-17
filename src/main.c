@@ -1,19 +1,14 @@
 #include "dex_format.h"
 #include <sys/mman.h>
 #include <sys/stat.h>
-#include <stdlib.h>
-
-void header_test(header_item * h_item);
-void map_list_test(uint32_t * size, map_item * list);
 
 int main(int argc, char *argv[])
 {
   int fd; // file descriptor
   struct stat sb;
   char * file;
-  header_item * h_item; // store parsed header
-  uint32_t * map_list_size; // store size of map_list
-  map_item * map_item_list; //
+  header_item hitem; // store parsed header
+  map_list mlist;
 
   if(argc == 2) // if 2 argument ?
   {
@@ -34,9 +29,13 @@ int main(int argc, char *argv[])
         char err[] = "Error while mmap\n"; // mmap failed
         write(1, err, sizeof(err));
       }
-      parse(file, &h_item, &map_list_size, &map_item_list);
-      print_test(h_item, map_list_size, map_item_list);
-      close(fd);
+      
+      parseHeader(file, &hitem);
+      header_test(hitem);
+      parseMap(file, &mlist, hitem.map_off);
+      map_list_test(mlist);
+
+    close(fd);
     }
     else
     {

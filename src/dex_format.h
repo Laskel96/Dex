@@ -1,6 +1,10 @@
 #include<stdint.h>
 #include<unistd.h>
 #include<fcntl.h>
+#include<string.h>
+#include<stdio.h>
+#include<stdlib.h>
+
 typedef struct
 {
   uint8_t magic[8]; // ubyte
@@ -36,21 +40,13 @@ typedef struct
   uint32_t offset;
 } map_item;
 
-/*
-
-original structure. not used.
-
 typedef struct
 {
   uint32_t size;
-  map_item list[size];
-} map_list;
-
-*/
-typedef struct
-{
-  uint32_t * size;
   map_item * list;
 } map_list;
-void parse(char * file, header_item ** h_item, uint32_t ** map_list_size, map_item ** map_item_list);
-void print_test(header_item * h_item, uint32_t * size, map_item * list);
+
+void parseHeader(char * file, header_item * hitem);
+void header_test(header_item h_item);
+void parseMap(char * file, map_list * mlist, uint32_t offset);
+void map_list_test(map_list mlist);
