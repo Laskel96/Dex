@@ -6,9 +6,11 @@ int main(int argc, char *argv[])
 {
   int fd; // file descriptor
   struct stat sb;
-  char * file;
+  char * base;
   header_item hitem; // store parsed header
   map_list mlist;
+  string_id_item * si_item;
+  string_data_item * sd_item;
 
   if(argc == 2) // if 2 argument ?
   {
@@ -24,17 +26,20 @@ int main(int argc, char *argv[])
         write(1, err, sizeof(err));
       }
 
-      if((file = (char *)mmap(0, sb.st_size, PROT_READ, MAP_PRIVATE, fd, 0)) == MAP_FAILED) //read entire file
+      if((base = (char *)mmap(0, sb.st_size, PROT_READ, MAP_PRIVATE, fd, 0)) == MAP_FAILED) //read entire file
       {
         char err[] = "Error while mmap\n"; // mmap failed
         write(1, err, sizeof(err));
       }
-      
-      parseHeader(file, &hitem);
-      header_test(hitem);
-      parseMap(file, &mlist, hitem.map_off);
-      map_list_test(mlist);
 
+      parseHeader(base, &hitem);
+      header_test(hitem);
+      parseMap(base, &mlist, hitem.map_off);
+      map_list_test(mlist);
+      parseStringId(base, &si_item, hitem.string_ids_size, hitem.string_ids_off);
+      string_id_test(si_item);
+      parseStringData(base, &sd_item, hitem.string_ids_size, si_item);
+      string_data_test(sd_item);
     close(fd);
     }
     else

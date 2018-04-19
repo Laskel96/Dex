@@ -1,8 +1,8 @@
 #include "dex_format.h"
 
-void parseHeader(char * file, header_item * hitem)
+void parseHeader(char * base, header_item * hitem)
 {
-  if(memmove(hitem, file, sizeof(header_item)) != NULL)
+  if(memmove(hitem, base, sizeof(header_item)) != NULL)
   {
     char str[] = "Header Parsed Successfully\n";
     write(1, str, sizeof(str));

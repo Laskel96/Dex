@@ -46,7 +46,26 @@ typedef struct
   map_item * list;
 } map_list;
 
-void parseHeader(char * file, header_item * hitem);
+typedef struct
+{
+  uint32_t string_data_off;
+} string_id_item;
+
+typedef struct
+{
+  uint32_t utf16_size; //uleb128
+  uint8_t * data; // MUTF-8
+} string_data_item;
+
+void parseHeader(char * base, header_item * hitem);
 void header_test(header_item h_item);
-void parseMap(char * file, map_list * mlist, uint32_t offset);
+void parseMap(char * base, map_list * mlist, uint32_t offset);
 void map_list_test(map_list mlist);
+void parseStringId(char * base,  string_id_item ** si_item, uint32_t size , uint32_t offset);
+void string_id_test(string_id_item * si_item);
+void parseStringData(char * base, string_data_item ** sd_item, uint32_t size, string_id_item * si_item);
+void string_data_test(string_data_item * sd_item);
+uint32_t readUnsignedLeb128( uint8_t** data);
+uint32_t readSignedLeb128( uint8_t** data);
+uint8_t * writeUnsignedLeb128(uint8_t * dest, uint32_t value);
+uint8_t * writeSignedLeb128(uint8_t * dest, int32_t value);
